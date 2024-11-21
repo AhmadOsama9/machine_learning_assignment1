@@ -1,25 +1,21 @@
+from helpers.load_data import load_data
 import models.preprocess_model as preprocess
-import views.display_view as display
+from views.display_view import print_data_error, print_data_success
 
-def handle_preprocessing():
+
+def handle_preprocess():
     file_path = 'data/co2_emissions_data.csv'
-
-    data, error = preprocess.load_data(file_path)
-
+    
+    data, error = load_data(file_path)
+    
     if data is not None:
-        display.print_data_success(data.shape[0], data.shape[1])
-
-        missing_values = preprocess.check_missing_values(data)
-        summary_stats = preprocess.check_numeric_features_scale(data)
-        data_for_pairplot = preprocess.get_data_for_pairplot(data)
-        correlation_data = preprocess.get_numeric_features_for_correlation(data)
-
-
-        display.print_missing_values(missing_values)
-        display.print_summary_stats(summary_stats)  
-        display.print_pairplot(data_for_pairplot)
-        display.print_correlation_heatmap(correlation_data)
-
+        # So we will use the functions according to the target and features
+        # depending on classification or regression I think
+        features, target = preprocess.separate_features_and_target(data, 'Emission Class')
+        features, target = preprocess.encode_categorical_features_targets(features, target)
+        
+        print('Features:', features)
+        print('Target:', target)
+        
     else:
-        display.print_data_error(error)
-
+        print_data_error(error)

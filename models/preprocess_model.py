@@ -1,29 +1,26 @@
 import pandas as pd
+# Our Target should be the CO2 emission
+# there is multiple columns in our dataset but if we assume one target then it will be it.
+
+# Separate features and targets
+def separate_features_and_target(data, target_column):
+    features = data.drop(columns=[target_column]) # we drop the target which will be CO2 emission in regression and Emission class in classification
+    target = data[target_column]
+    return features, target 
 
 
+# categorical features and targets are encoded
+# so here I also think we will use it for both regression and classification
+def encode_categorical_features_targets(features, target):
+    categorical_columns = features.select_dtypes(include=['object']).columns
+    
+    if len(categorical_columns) == 0:
+        return features, target
+    
+    features = pd.get_dummies(features, columns=categorical_columns)
 
-def load_data(file_path):
-    try:
-        data = pd.read_csv(file_path)
-        return data, None
-    except Exception as e:
-        return None, str(e)
-
-
-def check_missing_values(data):
-    # will data.isnull return a series where index is column and value is the count of missing
-    missing_values = data.isnull().sum()
-    return missing_values # could use missine_values[missing_values > 0] to filter out columns with no missing values
-
-
-def check_numeric_features_scale(data):
-    numeric_features = data.select_dtypes(include = ['float64', 'int64']) # To select only numeric columns
-    return numeric_features.describe()
-
-def get_data_for_pairplot(data):
-    return data.select_dtypes(include = ['float64', 'int64']) 
-    # In the assignment it didn't specify pairplot for only numeric so I'm confused
-
-def get_numeric_features_for_correlation(data):
-    return data.select_dtypes(include = ['float64', 'int64'])
-
+    if (target.dtype == 'object'):
+        target = pd.get_dummies(target) # It will encode it using one-hot encoding where we will have a series of binary columns
+        
+    return features, target
+    
