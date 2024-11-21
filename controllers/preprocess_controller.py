@@ -14,6 +14,7 @@ def handle_preprocess():
         features, target = preprocess.separate_features_and_target(data, 'Emission Class')
         features, target = preprocess.encode_categorical_features_targets(features, target)
         
+        # Just for testing
         print('Features:', features)
         print('Target:', target)
         
