@@ -8,37 +8,17 @@ import numpy as np
 
 
 def select_features(data):
-    selected_data = data[['Fuel Consumption Comb (mpg)', 'Engine Size(L)']]
-    # selected_data = data[['Fuel Consumption Comb (L/100 km)', 'Engine Size(L)']]
-    # selected_data = data[['Fuel Consumption Comb (L/100 km)', 'Engine Size(L)']]
-    # selected_data = data[['Fuel Consumption Comb (L/100 km)', 'Cylinders']]
-
+    selected_data = data[['Fuel Consumption Comb (L/100 km)', 'Engine Size(L)']]
     return selected_data
 
-# def model(features, target, learning_rate, iterations, tolerance=1e-6):
-#     model = LinearRegression()
-#     model.fit(features, target)
-#     predictions = model.predict(features)
-#     r2 = r2_score(target, predictions)
-#     final_cost = mean_squared_error(target, predictions) / 2
-
-#     print( {
-#         "R2 Score": r2,
-#         "Final Cost": final_cost,
-#         "Model": model,
-#         "Predictions": predictions
-#     })
-
 def model(features, target, learning_rate, iterations, tolerance=1e-6):
-
-
     if isinstance(features, pd.DataFrame):
         features = features.values
 
     if isinstance(target, pd.DataFrame):
         target = target.values
     
-    W = np.random.uniform(-5, 5, size=(features.shape[1], 1))  # Small random values
+    W = np.random.uniform(-1.0, 1.0, size=(features.shape[1], 1))  # Small random values
     b = np.zeros(1)
     cost_history = []
 
@@ -51,13 +31,13 @@ def model(features, target, learning_rate, iterations, tolerance=1e-6):
         
         # Step 2: Compute mse
         m = len(target)
-        error = y_pred - target.reshape(-1, 1)
+        error = y_pred - target.to_numpy().reshape(-1, 1)
         squared_error = error ** 2
         mse = sum(squared_error) / (2 * m)
         # print("mse", mse)
         cost_history.append(mse)
         
-         # Check for convergence: if the cost doesn't decrease significantly
+        # Check for convergence: if the cost doesn't decrease significantly
         if abs(prev_cost - mse) < tolerance:
             print("Convergence reached at iteration", i)
             break
