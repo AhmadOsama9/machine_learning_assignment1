@@ -1,5 +1,6 @@
 import seaborn as sns # an abbrivation from a drama so as a meme NICE
 import matplotlib.pyplot as plt
+import numpy as np
 
 def print_data_error(error):
     print(f"Error loading dataset: {error}")
@@ -29,7 +30,7 @@ def print_correlation_heatmap(correlation_data):
     heatmap.set_yticklabels(heatmap.get_yticklabels(), rotation=0)
     plt.title('Correlation Heatmap')
     plt.tight_layout()  # To control the padding
-    plt.show()
+    # plt.show()
 
 
 def print_pairplot(numeric_data):
@@ -40,4 +41,17 @@ def print_pairplot(numeric_data):
         pairplot = sns.pairplot(numeric_data, diag_kind="hist", height=2.5, aspect=1.2)  # Adjust size and aspect ratio
         pairplot.fig.suptitle('Pairplot of Numeric Features', y=1.09)  
         plt.subplots_adjust(hspace=1, wspace=1)  # Adjust space between subplots
-        plt.show()
+        # plt.show()
+        plt.savefig('pairplot.png')
+
+
+
+def print_cost_pairplot(costs):
+    plt.figure(figsize=(8, 5))
+    plt.plot(range(1, len(costs) + 1), costs, label='Cost', color='blue', linewidth=2)
+    plt.xlabel('Iterations')
+    plt.ylabel('Cost')
+    plt.title('Cost vs. Iterations in Gradient Descent')
+    plt.grid(True)
+    plt.legend()
+    plt.show()
