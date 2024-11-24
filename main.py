@@ -18,7 +18,6 @@ def load_data(file_path):
 
 
 
-
 def select_features(data):
     selected_data = data[['Fuel Consumption Comb (L/100 km)', 'Engine Size(L)']]
     return selected_data
@@ -195,7 +194,9 @@ def print_cost_pairplot(costs):
     plt.title('Cost vs. Iterations in Gradient Descent')
     plt.grid(True)
     plt.legend()
-    plt.show()
+    plt.tight_layout()  
+    plt.savefig('cost_vs_iterations.png')
+    # plt.show()
 
 
 
@@ -207,7 +208,7 @@ def handle_linear_model(x_train, x_test, y_train, y_test):
     iterarions = 1000
 
     hist, w, b = model(x_train, y_train, learning_rate, iterarions)
-    # print_cost_pairplot(hist)
+    print_cost_pairplot(hist)
 
     print("final cost :", hist[-1])
     r2_score = eval_model_using_r2_score((w, b), x_test, y_test)
